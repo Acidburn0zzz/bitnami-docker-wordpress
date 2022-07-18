@@ -1,10 +1,12 @@
-# Bitnami Docker Image for WordPress
+# WordPress packaged by Bitnami
 
 ## What is WordPress?
 
-> WordPress is one of the most versatile open source content management systems on the market. WordPress is built for high performance and is scalable to many servers, has easy integration via REST, JSON, SOAP and other formats, and features a whopping 15,000 plugins to extend and customize the application for just about any type of website.
+> WordPress is the world's most popular blogging and content management platform. Powerful yet simple, everyone from students to global corporations use it to build beautiful, functional websites.
 
-[https://www.wordpress.org/](https://www.wordpress.org/)
+[Overview of WordPress](http://www.wordpress.org)
+
+
 
 ## TL;DR
 
@@ -22,15 +24,13 @@ $ docker-compose up -d
 - Bitnami containers, virtual machines and cloud images use the same components and configuration approach - making it easy to switch between formats based on your project needs.
 - All our images are based on [minideb](https://github.com/bitnami/minideb) a minimalist Debian based container image which gives you a small base container image and the familiarity of a leading Linux distribution.
 - All Bitnami images available in Docker Hub are signed with [Docker Content Trust (DCT)](https://docs.docker.com/engine/security/trust/content_trust/). You can use `DOCKER_CONTENT_TRUST=1` to verify the integrity of the images.
-- Bitnami container images are released daily with the latest distribution packages available.
-
-> This [CVE scan report](https://quay.io/repository/bitnami/wordpress?tab=tags) contains a security report with all open CVEs. To get the list of actionable security issues, find the "latest" tag, click the vulnerability report link under the corresponding "Security scan" field and then select the "Only show fixable" filter on the next page.
+- Bitnami container images are released on a regular basis with the latest distribution packages available.
 
 # How to deploy WordPress in Kubernetes?
 
 Deploying Bitnami applications as Helm Charts is the easiest way to get started with our applications on Kubernetes. Read more about the installation in the [Bitnami WordPress Chart GitHub repository](https://github.com/bitnami/charts/tree/master/bitnami/wordpress).
 
-Bitnami containers can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters.
+Bitnami containers can be used with [Kubeapps](https://kubeapps.dev/) for deployment and management of Helm Charts in clusters.
 
 ## Why use a non-root container?
 
@@ -41,7 +41,9 @@ Non-root container images add an extra layer of security and are generally recom
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://docs.bitnami.com/tutorials/understand-rolling-tags-containers/).
 
 
-- [`5`, `5-debian-10`, `5.8.1`, `5.8.1-debian-10-r15`, `latest` (5/debian-10/Dockerfile)](https://github.com/bitnami/bitnami-docker-wordpress/blob/5.8.1-debian-10-r15/5/debian-10/Dockerfile)
+- [`6`, `6-debian-11`, `6.0.1`, `6.0.1-debian-11-r2`, `latest` (6/debian-11/Dockerfile)](https://github.com/bitnami/bitnami-docker-wordpress/blob/6.0.1-debian-11-r2/6/debian-11/Dockerfile)
+- [`6`, `6-debian-10`, `6.0.1`, `6.0.1-debian-10-r-1`, `latest` (6/debian-10/Dockerfile)](https://github.com/bitnami/bitnami-docker-wordpress/blob/6.0.1-debian-10-r-1/6/debian-10/Dockerfile)
+- [`5`, `5-debian-11`, `5.9.3`, `5.9.3-debian-11-r18` (5/debian-11/Dockerfile)](https://github.com/bitnami/bitnami-docker-wordpress/blob/5.9.3-debian-11-r18/5/debian-11/Dockerfile)
 
 Subscribe to project updates by watching the [bitnami/wordpress GitHub repo](https://github.com/bitnami/bitnami-docker-wordpress).
 
@@ -62,7 +64,7 @@ $ docker pull bitnami/wordpress:[TAG]
 If you wish, you can also build the image yourself.
 
 ```console
-$ docker build -t bitnami/wordpress:latest 'https://github.com/bitnami/bitnami-docker-wordpress.git#master:5/debian-10'
+$ docker build -t bitnami/wordpress:latest 'https://github.com/bitnami/bitnami-docker-wordpress.git#master:6/debian-11'$ docker build -t bitnami/wordpress:latest 'https://github.com/bitnami/bitnami-docker-wordpress.git#master:6/debian-10'
 ```
 
 ## How to use this image
@@ -117,7 +119,7 @@ $ docker run -d --name wordpress \
   bitnami/wordpress:latest
 ```
 
-Access your application at *http://your-ip/*
+Access your application at `http://your-ip/`
 
 ## Persisting your application
 
@@ -198,7 +200,7 @@ $ docker run -d --name wordpress \
 
 ### Environment variables
 
-When you start the WordPress image, you can adjust the configuration of the instance by passing one or more environment variables either on the docker-compose file or on the `docker run` command line. If you want to add a new environment variable:
+When you start the WordPress image, you can adjust the configuration of the instance by passing one or more environment variables either on the docker-compose file or on the `docker run` command line. Please note that some variables are only considered when the container is started for the first time. If you want to add a new environment variable:
 
 - For docker-compose add the variable name and value under the application section in the [`docker-compose.yml`](https://github.com/bitnami/bitnami-docker-wordpress/blob/master/docker-compose.yml) file present in this repository:
 
@@ -244,6 +246,20 @@ Available environment variables:
 - `WORDPRESS_ENABLE_HTTPS`: Whether to use HTTPS by default. Default: **no**
 - `WORDPRESS_SKIP_BOOTSTRAP`: Skip the WordPress installation wizard. This is necessary when providing a database with existing WordPress data. Default: **no**
 - `WORDPRESS_AUTO_UPDATE_LEVEL`: Level of auto-updates to allow for the WordPress core installation. Valid values: `major`, `minor`, `none`. Default: **none**
+- `WORDPRESS_ENABLE_REVERSE_PROXY`: Enable WordPress support for reverse proxy headers. Default: **no**
+
+##### Salt and keys configuration
+
+Authentication unique keys and salts. Specify these values to prevent cookies from being invalidated when creating a new container or when using multiple containers to serve the same WordPress instance. By default these values are generated randomly:
+
+- `WORDPRESS_AUTH_KEY`: Set the value of the `AUTH_KEY` constant in `wp-config.php`
+- `WORDPRESS_SECURE_AUTH_KEY`: Set the value of the `SECURE_AUTH_KEY` constant in `wp-config.php`
+- `WORDPRESS_LOGGED_IN_KEY`: Set the value of the `LOGGED_IN_KEY` constant in `wp-config.php`
+- `WORDPRESS_NONCE_KEY`: Set the value of the `NONCE_KEY` constant in `wp-config.php`
+- `WORDPRESS_AUTH_SALT`: Set the value of the `AUTH_SALT` constant in `wp-config.php`
+- `WORDPRESS_SECURE_AUTH_SALT`: Set the value of the `SECURE_AUTH_SALT` constant in `wp-config.php`
+- `WORDPRESS_LOGGED_IN_SALT`: Set the value of the `LOGGED_IN_SALT` constant in `wp-config.php`
+- `WORDPRESS_NONCE_SALT`: Set the value of the `NONCE_SALT` constant in `wp-config.php`
 
 ##### Multisite configuration
 
@@ -538,7 +554,6 @@ Here is an example of extending the image with the following modifications:
 
 ```Dockerfile
 FROM bitnami/wordpress
-LABEL maintainer "Bitnami <containers@bitnami.com>"
 
 ## Change user to perform privileged actions
 USER 0
@@ -613,6 +628,10 @@ Based on the extended image, you can update the [`docker-compose.yml`](https://g
 
 - **wp-cli** tool is included in the Docker image. Find it at **/opt/bitnami/wp-cli/bin/wp**.
 
+## Branch Deprecation Notice
+
+WordPress's branch 5.x.x is no longer maintained by upstream and is now internally tagged as to be deprecated. This branch will no longer be released in our catalog a month after this notice is published, but already released container images will still persist in the registries. Valid to be removed starting on: 07-29-2022
+
 ## Contributing
 
 We'd love for you to contribute to this container. You can request new features by creating an [issue](https://github.com/bitnami/bitnami-docker-wordpress/issues), or submit a [pull request](https://github.com/bitnami/bitnami-docker-wordpress/pulls) with your contribution.
@@ -629,7 +648,7 @@ If you encountered a problem running this container, you can file an [issue](htt
 
 ## License
 
-Copyright (c) 2021 Bitnami
+Copyright &copy; 2022 Bitnami
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
